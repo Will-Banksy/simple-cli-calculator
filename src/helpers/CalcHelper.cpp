@@ -43,6 +43,14 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                 if(!err) { err = new stringstream(); }
                 *err << "ERROR: Brackets cannot appear as '()'\n";
             }
+            if(elements[i].type == ARGUMENT_SEPARATOR && (elements[i + 1].type == ARGUMENT_SEPARATOR || (elements[i + 1].type == BRACKET && !elements[i + 1].bracket_isopen))) {
+                if(!err) { err = new stringstream(); }
+                *err << "ERROR: Empty argument";
+            }
+            if(elements[i].type == BRACKET && elements[i].bracket_isopen && elements[i + 1].type == ARGUMENT_SEPARATOR) {
+                if(!err) { err = new stringstream(); }
+                *err << "ERROR: Empty argument";
+            }
         }
         if(elements[i].type == OPERATOR && elements[i].op_value != '!') { // If this element is an operator that is not '!' and is followed by a ')' or is at the end of the string
             if(i == elements.size() - 1) {
@@ -115,6 +123,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                         } else {
                             if(!err) { err = new stringstream(); }
                             *err << "ERROR: Function " << elements[i - 2].func_value << " does not exist\n";
+                            goto handleErrors;
                         }
                         elements[i].num_value = ans;
                         elements.erase(elements.begin() + i - 2);
@@ -139,7 +148,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             if(elements[i].type == OPERATOR && elements[i].op_value == '-' && elements[i + 1].type == NUMBER) {
                 if(i == 0) {
                     goto dealWithNegative;
-                } else if(elements[i - 1].type == OPERATOR || (elements[i - 1].type == BRACKET && elements[i - 1].bracket_isopen)) {
+                } else if(elements[i - 1].type == OPERATOR || (elements[i - 1].type == BRACKET && elements[i - 1].bracket_isopen) || elements[i - 1].type == ARGUMENT_SEPARATOR) {
                     dealWithNegative:
                     elements[i + 1].num_value *= -1; // Make the number negative
                     elements.erase(elements.begin() + i); // And delete the '-'
@@ -147,11 +156,14 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             }
         }
 
-        // Find the innermost bracket pair
+        // Find the innermost 'section' i.e. bracket pair or between two ARGUMENT_SEPARATORs (commas)
         int start = Helper::find_last_bracket(elements, true);
         if(start == -1) { start = 0; }
         int end = elements.size();
         for(int i = start; i < elements.size(); i++) {
+            if(elements[i].type == ARGUMENT_SEPARATOR && !(elements[i - 2].type == ARGUMENT_SEPARATOR || elements[i - 2].isOpenBracket())) {
+                // TODO: Do stuff, also sort out if statement
+            }
             if(elements[i].type == BRACKET && !elements[i].bracket_isopen) {
                 end = i;
                 break;

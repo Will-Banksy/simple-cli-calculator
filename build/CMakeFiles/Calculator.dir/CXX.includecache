@@ -11,6 +11,8 @@ FunctionHandler.h
 /home/williamb/Documents/Coding/C++/CalculatorThingy/src/helpers/FunctionHandler.h
 math.h
 -
+sstream
+-
 
 /home/williamb/Documents/Coding/C++/CalculatorThingy/src/helpers/FunctionHandler.h
 vector

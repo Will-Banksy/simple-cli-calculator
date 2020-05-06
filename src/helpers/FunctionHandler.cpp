@@ -20,15 +20,15 @@ map<string, Function> FunctionHandler::initFunctions() {
     //     return tan(args[0]);
     // });
 
-    map.insert(pair<string, Function>("sin", Function("sin", 1, [](vector<double> args) { // Define function with lambda
-        return sin(args[0]);
-    })));
-    map.insert(pair<string, Function>("cos", Function("cos", 1, [](vector<double> args) {
-        return cos(args[0]);
-    })));
-    map.insert(pair<string, Function>("tan", Function("tan", 1, [](vector<double> args) {
-        return tan(args[0]);
-    })));
+    // map.insert(pair<string, Function>("sin", Function("sin", 1, [](vector<double> args) { // Define function with lambda
+    //     return sin(args[0]);
+    // })));
+    // map.insert(pair<string, Function>("cos", Function("cos", 1, [](vector<double> args) {
+    //     return cos(args[0]);
+    // })));
+    // map.insert(pair<string, Function>("tan", Function("tan", 1, [](vector<double> args) {
+    //     return tan(args[0]);
+    // })));
     return map;
 }
 
@@ -42,6 +42,7 @@ double FunctionHandler::HandleFunction(string name, vector<double> args, strings
         if(args.size() != functions[name].params_num) { // If the number of arguments given is not equal to the number expected, throw an error
             if(!err) { err = new stringstream(); }
             *err << "ERROR: Function " << name << " expects " << functions[name].params_num << " arguments, you supplied " << args.size();
+            return 0;
         } else {
             return functions[name].eval(args);
         }

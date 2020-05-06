@@ -48,3 +48,11 @@ Element::Element(Type type) {
 Element::~Element() {
     // Don't think I need to do anything here, as apparently you only need to manually deallocate memory if you initialise pointers with the 'new' operator
 }
+
+bool Element::isOpenBracket() {
+    return type == BRACKET && bracket_isopen;
+}
+
+bool Element::isCloseBracket() {
+    return type == BRACKET && !bracket_isopen;
+}

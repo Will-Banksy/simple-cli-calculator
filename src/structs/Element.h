@@ -34,6 +34,9 @@ namespace structs {
             char op_value;
             string func_value;
             bool bracket_isopen;
+
+            bool isOpenBracket();
+            bool isCloseBracket();
     };
 }
 

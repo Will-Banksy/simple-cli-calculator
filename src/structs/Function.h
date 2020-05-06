@@ -10,11 +10,11 @@ using namespace std;
 namespace structs {
     class Function {
         public:
-            Function(string name, int params_num, double (*eval)(vector<double>)); // Taking a pointer to a function as a parameter to this constructor
-
             string name;
             int params_num;
             double (*eval)(vector<double>); // A function as a variable
+
+            Function(string name, int params_num, double (*eval)(vector<double>)); // Taking a pointer to a function as a parameter to this constructor
     };
 }
 
