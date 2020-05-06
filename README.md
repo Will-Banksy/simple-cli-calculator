@@ -10,6 +10,8 @@ Functions defined: sin, cos, tan.
 
 Only tested on Manjaro Linux
 
+**Do not expect this to work well/at all, it is a work in progress**
+
 To compile:
 
 Create build directory in the root directory of the project, and `cd` into it. Then:
