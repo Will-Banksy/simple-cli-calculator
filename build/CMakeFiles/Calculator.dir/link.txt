@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/Calculator.dir/src/main.cpp.o CMakeFiles/Calculator.dir/src/helpers/CalcHelper.cpp.o CMakeFiles/Calculator.dir/src/structs/Element.cpp.o CMakeFiles/Calculator.dir/src/helpers/Helper.cpp.o CMakeFiles/Calculator.dir/src/helpers/FunctionHandler.cpp.o CMakeFiles/Calculator.dir/src/structs/Function.cpp.o  -o Calculator 

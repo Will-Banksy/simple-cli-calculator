@@ -1,3 +1,0 @@
-/home/williamb/Documents/Coding/C++/CalculatorThingy/build/CMakeFiles/rebuild_cache.dir
-/home/williamb/Documents/Coding/C++/CalculatorThingy/build/CMakeFiles/Calculator.dir
-/home/williamb/Documents/Coding/C++/CalculatorThingy/build/CMakeFiles/edit_cache.dir
