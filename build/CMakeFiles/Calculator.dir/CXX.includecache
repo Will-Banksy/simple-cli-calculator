@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/williamb/Documents/Coding/C++/CalculatorThingy/src/helpers/FunctionHandler.cpp
+FunctionHandler.h
+/home/williamb/Documents/Coding/C++/CalculatorThingy/src/helpers/FunctionHandler.h
+math.h
+-
+
+/home/williamb/Documents/Coding/C++/CalculatorThingy/src/helpers/FunctionHandler.h
+vector
+-
+string
+-
+map
+-
+../structs/Function.h
+/home/williamb/Documents/Coding/C++/CalculatorThingy/src/structs/Function.h
+
+/home/williamb/Documents/Coding/C++/CalculatorThingy/src/structs/Function.h
+string
+-
+vector
+-
+
