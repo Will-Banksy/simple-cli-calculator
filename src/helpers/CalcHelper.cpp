@@ -160,15 +160,17 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
         int start = Helper::find_last_bracket(elements, true);
         if(start == -1) { start = 0; }
         int end = elements.size();
+        vector<int> arg_seps;
         for(int i = start; i < elements.size(); i++) {
-            if(elements[i].type == ARGUMENT_SEPARATOR && !(elements[i - 2].type == ARGUMENT_SEPARATOR || elements[i - 2].isOpenBracket())) {
-                // TODO: Do stuff, also sort out if statement
+            if(elements[i].type == ARGUMENT_SEPARATOR) {
+                arg_seps.push_back(i);
             }
             if(elements[i].type == BRACKET && !elements[i].bracket_isopen) {
                 end = i;
                 break;
             }
         }
+        
         cout << "start: " << start << " end: "<< end << " elemsSize: " << elements.size() << endl;
         for(int o = 0; o < ops_bodmas.size(); o++) {
             for(int i = start + 1; i < end - 1; i++) { // Now, do all the calculations in that little section
