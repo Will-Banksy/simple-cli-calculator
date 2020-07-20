@@ -21,7 +21,7 @@ bool isOneOf(char ch, char comp[], int complen) { // Take length of array as par
 // A whitespace trimming function (not from stack overflow, but here's a link that could be helpful) -- https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 string removeAll(string* str, int ws_arrsize = 6, char rem[] = ws_) { // Take length of array as parameter
     stringstream ss; // Automatically initialised
-    
+
     for(int i = 0; i < str->length(); i++) {
         // If the current character is not a whitespace character, insert it into the stringstream
         if(!isOneOf(str->at(i), ws_, ws_arrsize)) {

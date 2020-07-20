@@ -45,13 +45,23 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             }
             if(elements[i].type == ARGUMENT_SEPARATOR && (elements[i + 1].type == ARGUMENT_SEPARATOR || (elements[i + 1].type == BRACKET && !elements[i + 1].bracket_isopen))) {
                 if(!err) { err = new stringstream(); }
-                *err << "ERROR: Empty argument";
+                *err << "ERROR: Empty argument\n";
             }
             if(elements[i].type == BRACKET && elements[i].bracket_isopen && elements[i + 1].type == ARGUMENT_SEPARATOR) {
                 if(!err) { err = new stringstream(); }
-                *err << "ERROR: Empty argument";
+                *err << "ERROR: Empty argument\n";
             }
+            if(elements[i + 1].type == OPERATOR && elements[i + 1].op_value == '!' && elements[i].isOpenBracket()) {
+				if(!err) { err = new stringstream(); }
+				*err << "ERROR: Operator ! must come after an expression\n";
+			}
         }
+        // Checks whether the elements array is size 1 (so the only element should evaluate) or if this element is surrounded by a pair of brackets
+        bool shouldEval = elements.size() == 1 ? true : (i > 0 && i < elements.size() ? elements[i - 1].isOpenBracket() && elements[i + 1].isCloseBracket() : false);
+        if(shouldEval && elements[i].type == OPERATOR) {
+			if(!err) { err = new stringstream(); }
+			*err << "ERROR: Operator " << elements[i].op_value << " does not evaluate\n";
+		}
         if(elements[i].type == OPERATOR && elements[i].op_value != '!') { // If this element is an operator that is not '!' and is followed by a ')' or is at the end of the string
             if(i == elements.size() - 1) {
                 goto submitError;
@@ -130,7 +140,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                         i--;
                     }
                 }
-                
+
                 elements.erase(elements.begin() + i + 1);
                 elements.erase(elements.begin() + i - 1);
             }
@@ -170,7 +180,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                 break;
             }
         }
-        
+
         cout << "start: " << start << " end: "<< end << " elemsSize: " << elements.size() << endl;
         for(int o = 0; o < ops_bodmas.size(); o++) {
             for(int i = start + 1; i < end - 1; i++) { // Now, do all the calculations in that little section
@@ -221,7 +231,7 @@ vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
     vector<Element> elems;
     bool isInNum = false;
     bool isInStr = false;
-    stringstream stream; // A string stream. Like how I'd use a Java StringBuilder, 
+    stringstream stream; // A string stream. Like how I'd use a Java StringBuilder,
     for(int i = 0; i < arrlen; i++) {
         char ch = chars[i];
         if(isOpeningBracket(ch)) {
