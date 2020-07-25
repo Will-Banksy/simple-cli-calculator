@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "src/structs/Element.h"
+#include "CalculationHandler.h"
 
 using namespace structs;
 
@@ -36,6 +37,12 @@ bool ParseHandler::isClosingBracket(char ch) {
 }
 
 bool ParseHandler::isOperator(char ch) {
+	for(int i = 0; i < CalculationHandler::operators.size(); i++) {
+		if(ch == CalculationHandler::operators[i]) {
+			return true;
+		}
+	}
+	return ch == ',';
 }
 
 bool ParseHandler::isPartOfNum(char ch) {
