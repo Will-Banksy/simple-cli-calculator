@@ -56,3 +56,25 @@ bool Element::isOpenBracket() {
 bool Element::isCloseBracket() {
     return type == BRACKET && !bracket_isopen;
 }
+
+std::string structs::Element::toString() {
+	switch(type) {
+		case NUMBER:
+			return std::to_string(num_value);
+
+		case OPERATOR:
+			return std::to_string(op_value);
+
+		case ARGUMENT_SEPARATOR:
+			return ",";
+
+		case BRACKET:
+			return isOpenBracket() ? "(" : ")";
+
+		case FUNCTION:
+			return func_value;
+
+		default:
+			return "";
+	}
+}

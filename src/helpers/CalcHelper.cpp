@@ -16,7 +16,7 @@ map<string, double> CalcHelper::constants = createMap();
 AngleMode CalcHelper::mode = DEGREES;
 
 double CalcHelper::calculate(char chars[], int arrlen) {
-    // auto is like var in Java or C# or whatever
+    // auto is like var in Java or C# or whatever. It's an automatically assigned type
     auto elems = CalcHelper::getElements(chars, arrlen);
     return CalcHelper::doCalculations(elems);
 }

@@ -31,8 +31,6 @@ string removeAll(string* str, int ws_arrsize = 6, char rem[] = ws_) { // Take le
     return ss.str();
 }
 
-
-
 // Start point
 int main() {
     while(true) {

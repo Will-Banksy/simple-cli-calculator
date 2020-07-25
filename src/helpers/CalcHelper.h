@@ -21,7 +21,7 @@ namespace helpers {
             static double doCalculations(vector<Element> &elements);
             static vector<Element> getElements(char chars[], int arrlen);
             static double calculate(char chars[], int arrlen);
-        
+
         private:
             static vector<char> operators;
             static vector<char> ops_bodmas;

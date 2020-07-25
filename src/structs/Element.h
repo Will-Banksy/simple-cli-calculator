@@ -3,6 +3,7 @@
 #define ELEMENT_HEADER
 
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -37,6 +38,8 @@ namespace structs {
 
             bool isOpenBracket();
             bool isCloseBracket();
+
+			std::string toString();
     };
 }
 
