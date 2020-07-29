@@ -2,8 +2,8 @@
 
 using namespace structs;
 
-Function::Function(string name, int params_num, double (*eval)(vector<double>)) {
+Function::Function(std::string name, int params_num, FunctionAction action) {
     this->name = name;
     this->params_num = params_num;
-    this->eval = eval;
+    this->eval = action;
 }

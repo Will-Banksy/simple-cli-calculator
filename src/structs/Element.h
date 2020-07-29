@@ -5,8 +5,6 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 namespace structs {
     enum Type {
         NUMBER,
@@ -21,7 +19,7 @@ namespace structs {
             // Constructors
             Element(Type type, double val);
             Element(Type type, char val);
-            Element(Type type, string val);
+            Element(Type type, std::string val);
             Element(Type type, bool val);
             Element(Type type);
 
@@ -33,11 +31,12 @@ namespace structs {
             // The value of this element - which variable you use depends on the type of this element
             double num_value;
             char op_value;
-            string func_value;
+            std::string func_value;
             bool bracket_isopen;
 
             bool isOpenBracket();
             bool isCloseBracket();
+			bool isOperator(char ch);
 
 			std::string toString();
     };

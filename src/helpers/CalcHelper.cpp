@@ -10,9 +10,9 @@
 using namespace helpers;
 using namespace structs;
 
-vector<char> CalcHelper::operators = vector<char>({ '+', '-', '*', '/', '^', '!' });
-vector<char> CalcHelper::ops_bodmas = vector<char>({ '^', '/', '*', '-', '+' });
-map<string, double> CalcHelper::constants = createMap();
+std::vector<char> CalcHelper::operators = std::vector<char>({ '+', '-', '*', '/', '^', '!' });
+std::vector<char> CalcHelper::ops_bodmas = std::vector<char>({ '^', '/', '*', '-', '+' });
+std::map<std::string, double> CalcHelper::constants = createMap();
 AngleMode CalcHelper::mode = DEGREES;
 
 double CalcHelper::calculate(char chars[], int arrlen) {
@@ -26,40 +26,40 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
 
     // Constants will be assumed to be functions, so here we can sort that out
 
-    stringstream* err = NULL;
+    std::stringstream* err = NULL;
     int numopenbr = 0;
     int numclosebr = 0;
     for(int i = 0; i < elements.size(); i++) {
         if(i < elements.size() - 1) {
             if(elements[i].type == FUNCTION && elements[i + 1].type == FUNCTION) { // If two functions are next to each other
-                if(!err) { err = new stringstream(); }
+                if(!err) { err = new std::stringstream(); }
                 *err << "ERROR: Functions " << elements[i].func_value << " and " << elements[i + 1].func_value << " cannot be adjacent\n";
             }
             if(elements[i].type == NUMBER && elements[i + 1].type == NUMBER) { // If two numbers are next to each other
-                if(!err) { err = new stringstream(); }
+                if(!err) { err = new std::stringstream(); }
                 *err << "ERROR: Numbers " << elements[i].num_value << " and " << elements[i + 1].num_value << " cannot be adjacent\n";
             }
             if(elements[i].type == BRACKET && elements[i + 1].type == BRACKET && elements[i].bracket_isopen && !elements[i + 1].bracket_isopen) { // If the pattern '()' appears
-                if(!err) { err = new stringstream(); }
+                if(!err) { err = new std::stringstream(); }
                 *err << "ERROR: Brackets cannot appear as '()'\n";
             }
             if(elements[i].type == ARGUMENT_SEPARATOR && (elements[i + 1].type == ARGUMENT_SEPARATOR || (elements[i + 1].type == BRACKET && !elements[i + 1].bracket_isopen))) {
-                if(!err) { err = new stringstream(); }
+                if(!err) { err = new std::stringstream(); }
                 *err << "ERROR: Empty argument\n";
             }
             if(elements[i].type == BRACKET && elements[i].bracket_isopen && elements[i + 1].type == ARGUMENT_SEPARATOR) {
-                if(!err) { err = new stringstream(); }
+                if(!err) { err = new std::stringstream(); }
                 *err << "ERROR: Empty argument\n";
             }
             if(elements[i + 1].type == OPERATOR && elements[i + 1].op_value == '!' && elements[i].isOpenBracket()) {
-				if(!err) { err = new stringstream(); }
+				if(!err) { err = new std::stringstream(); }
 				*err << "ERROR: Operator ! must come after an expression\n";
 			}
         }
         // Checks whether the elements array is size 1 (so the only element should evaluate) or if this element is surrounded by a pair of brackets
         bool shouldEval = elements.size() == 1 ? true : (i > 0 && i < elements.size() ? elements[i - 1].isOpenBracket() && elements[i + 1].isCloseBracket() : false);
         if(shouldEval && elements[i].type == OPERATOR) {
-			if(!err) { err = new stringstream(); }
+			if(!err) { err = new std::stringstream(); }
 			*err << "ERROR: Operator " << elements[i].op_value << " does not evaluate\n";
 		}
         if(elements[i].type == OPERATOR && elements[i].op_value != '!') { // If this element is an operator that is not '!' and is followed by a ')' or is at the end of the string
@@ -69,7 +69,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             if(i < elements.size() - 1) {
                 if(elements[i + 1].type == BRACKET && !elements[i + 1].bracket_isopen) {
                     submitError:
-                    if(!err) { err = new stringstream(); }
+                    if(!err) { err = new std::stringstream(); }
                     *err << "ERROR: Operator " << elements[i].op_value << " must be followed by an expression\n";
                 }
             }
@@ -84,7 +84,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                     double val = constants[elements[i].func_value];
                     elements[i] = Element(NUMBER, val);
                 } else {
-                    if(!err) { err = new stringstream(); }
+                    if(!err) { err = new std::stringstream(); }
                     *err << "ERROR: Constant " << elements[i].func_value << " does not exist";
                 }
             }
@@ -98,7 +98,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
         }
     }
     if(numclosebr != numopenbr) { // If the number of opening brackets is not the same as the number of closing brackets
-        if(!err) { err = new stringstream(); }
+        if(!err) { err = new std::stringstream(); }
         *err << "ERROR: Number of closing and opening brackets must be equal\n";
     }
 
@@ -107,7 +107,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
         if(err) { // Check for errors
             handleErrors:
             err->flush();
-            cout << err->str() << endl; // endl flushes the stream
+            std::cout << err->str() << std::endl; // endl flushes the stream
             return 0;
         }
 
@@ -120,7 +120,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             if(elements[i].type == NUMBER && elements[i - 1].type == BRACKET && elements[i - 1].bracket_isopen && elements[i + 1].type == BRACKET && !elements[i + 1].bracket_isopen) {
                 if(i > 1) {
                     if(elements[i - 2].type == FUNCTION) {
-                        string elemStr = elements[i - 2].func_value;
+                        std::string elemStr = elements[i - 2].func_value;
                         Helper::tolower(elemStr); // Convert elemStr to lowercase
                         double ans = elements[i].num_value;
                         double ang = mode == DEGREES ? Helper::rad(&elements[i].num_value) : elements[i].num_value;
@@ -131,7 +131,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                         } else if(elemStr == "tan") {
                             ans = tan(ang);
                         } else {
-                            if(!err) { err = new stringstream(); }
+                            if(!err) { err = new std::stringstream(); }
                             *err << "ERROR: Function " << elements[i - 2].func_value << " does not exist\n";
                             goto handleErrors;
                         }
@@ -170,7 +170,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
         int start = Helper::find_last_bracket(elements, true);
         if(start == -1) { start = 0; }
         int end = elements.size();
-        vector<int> arg_seps;
+        std::vector<int> arg_seps;
         for(int i = start; i < elements.size(); i++) {
             if(elements[i].type == ARGUMENT_SEPARATOR) {
                 arg_seps.push_back(i);
@@ -181,7 +181,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
             }
         }
 
-        cout << "start: " << start << " end: "<< end << " elemsSize: " << elements.size() << endl;
+        std::cout << "start: " << start << " end: "<< end << " elemsSize: " << elements.size() << std::endl;
         for(int o = 0; o < ops_bodmas.size(); o++) {
             for(int i = start + 1; i < end - 1; i++) { // Now, do all the calculations in that little section
                 if(elements[i].type == OPERATOR && elements[i - 1].type == NUMBER && elements[i + 1].type == NUMBER && elements[i].op_value == ops_bodmas[o]) {
@@ -194,7 +194,7 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
 
                         case '/':
                             if(elements[i + 1].num_value == 0) {
-                                if(!err) { err = new stringstream(); }
+                                if(!err) { err = new std::stringstream(); }
                                 *err << "ERROR: Attempted division of " << elements[i - 1].num_value << " by zero";
                                 goto handleErrors;
                             }
@@ -216,22 +216,22 @@ double CalcHelper::doCalculations(std::vector<Element> &elements) { // TODO: All
                     elements[i - 1].num_value = ans;
                     elements.erase(elements.begin() + i + 1);
                     elements.erase(elements.begin() + i);
-                    cout << "ERASE" << endl;
+                    std::cout << "ERASE" << std::endl;
                 }
             }
         }
     }
 
-    cout << "New elems: " << Helper::elemsToStr(elements);
+    std::cout << "New elems: " << Helper::elemsToStr(elements);
 
     return ans; // TODO: Maybe actually do something here
 }
 
-vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
-    vector<Element> elems;
+std::vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
+    std::vector<Element> elems;
     bool isInNum = false;
     bool isInStr = false;
-    stringstream stream; // A string stream. Like how I'd use a Java StringBuilder,
+    std::stringstream stream; // A string stream. Like how I'd use a Java StringBuilder,
     for(int i = 0; i < arrlen; i++) {
         char ch = chars[i];
         if(isOpeningBracket(ch)) {
@@ -247,7 +247,7 @@ vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
         } else if((isLetter(ch) || (isInStr && !isOpeningBracket(ch) && !isClosingBracket(ch) && !isOperator(ch))) && !isInNum) {
             if(!isInStr) {
                 isInStr = true;
-                stream.str(""); // stringstream.clear doesn't clear the stream contents, this does
+                stream.str(""); // std::stringstream.clear doesn't clear the stream contents, this does
             }
             // Insert character into stream
             stream << ch;
@@ -263,7 +263,7 @@ vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
         } else if(isPartOfNum(ch) && !isInStr) { // If the current character is part of a number
             if(!isInNum) {
                 isInNum = true;
-                stream.str(""); // stringstream.clear doesn't clear the stream contents, this does
+                stream.str(""); // std::stringstream.clear doesn't clear the stream contents, this does
             }
             // Insert character into stream
             stream << ch;
@@ -274,14 +274,14 @@ vector<Element> CalcHelper::getElements(char chars[], int arrlen) {
             } else if(!isPartOfNum(chars[i + 1])) {
                 endOfNum:
                 isInNum = false;
-                double num = stod(stream.str()); // Parse the string from the stringstream as a double
+                double num = stod(stream.str()); // Parse the string from the std::stringstream as a double
                 elems.push_back(Element(NUMBER, num));
             }
         }
     }
 
     // Just a debugging thing
-    cout << "getElements: " << Helper::elemsToStr(elems);
+    std::cout << "getElements: " << Helper::elemsToStr(elems);
 
     return elems;
 }
@@ -311,8 +311,8 @@ bool CalcHelper::isPartOfNum(char ch) {
     return (isdigit(ch) || ch == '.' || ch == 'e' || ch == 'E'); // Want to include '.' and e or E for scientific notation
 }
 
-map<string, double> CalcHelper::createMap() {
-    map<string, double> map;
+std::map<std::string, double> CalcHelper::createMap() {
+    std::map<std::string, double> map;
     map["pi"] = M_PI;
     map["e"] = M_E;
     map["tau"] = M_PI * 2;

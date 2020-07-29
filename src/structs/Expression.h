@@ -21,6 +21,7 @@ namespace structs {
 			~Expression() = default;
 			int evaluate();
 			bool isValid(std::stringstream* err = nullptr);
+			std::string elemsToString();
 			/**
 			 * When we get the elements, they will be raw, as in things like negative numbers won't exist, we'll have a minus operator and the number, so we need to sort that out
 			 */
@@ -29,7 +30,6 @@ namespace structs {
 			std::vector<Element>* elems;
 
 		private:
-			std::string elemsToString();
 			bool parsed;
 	};
 }

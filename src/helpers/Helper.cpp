@@ -6,15 +6,15 @@
 
 using namespace helpers;
 
-string Helper::elemsToStr(vector<Element> elems) {
-    stringstream ss;
+std::string Helper::elemsToStr(std::vector<Element> elems) {
+    std::stringstream ss;
     for(Element elem : elems) {
         ss << "Element[type:" << elem.type;
         ss << ",num_val:" << elem.num_value;
         ss << ",op_val:" << elem.op_value;
         ss << ",func_val:" << elem.func_value;
         ss << ",bracket:" << elem.bracket_isopen;
-        ss << "] " << endl;
+        ss << "] " << std::endl;
     }
     return ss.str();
 }
@@ -25,7 +25,7 @@ double Helper::factorial(double num) {
     return tgamma(num + 1);
 }
 
-int Helper::find_last_bracket(vector<Element> elems, bool isopen) {
+int Helper::find_last_bracket(std::vector<Element> elems, bool isopen) {
     for(int i = elems.size() - 1; i >= 0; i--) {
         if(elems[i].type == BRACKET && elems[i].bracket_isopen == isopen) {
             return i;
@@ -34,7 +34,7 @@ int Helper::find_last_bracket(vector<Element> elems, bool isopen) {
     return -1;
 }
 
-void Helper::tolower(string& str) {
+void Helper::tolower(std::string& str) {
     std::for_each(str.begin(), str.end(),
     [](char& ch) {
         ch = std::tolower(static_cast<unsigned char>(ch)); // std::tolower expects unsigned chars

@@ -20,7 +20,7 @@ Element::Element(Type type, char val) {
     bracket_isopen = false;
 }
 
-Element::Element(Type type, string val) {
+Element::Element(Type type, std::string val) {
     this->type = type;
     func_value = val;
 
@@ -39,6 +39,7 @@ Element::Element(Type type, bool val) {
 }
 
 Element::Element(Type type) {
+	this->type = type;
     num_value = 0;
     op_value = 0;
     func_value = "";
@@ -55,6 +56,10 @@ bool Element::isOpenBracket() {
 
 bool Element::isCloseBracket() {
     return type == BRACKET && !bracket_isopen;
+}
+
+bool structs::Element::isOperator(char ch) {
+	return type == OPERATOR && op_value == ch;
 }
 
 std::string structs::Element::toString() {

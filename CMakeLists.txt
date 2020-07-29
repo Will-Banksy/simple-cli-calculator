@@ -13,8 +13,6 @@ set(CPP_FILES
 	src/main.cpp
 
 	src/helpers/Helper.cpp
-	src/helpers/FunctionHandler.cpp
-	src/helpers/CalcHelper.cpp
 
 	src/structs/Element.cpp
 	src/structs/Function.cpp
@@ -22,12 +20,12 @@ set(CPP_FILES
 
 	src/handlers/ParseHandler.cpp
 	src/handlers/CalculationHandler.cpp
+	src/handlers/EvaluateHandler.cpp
+	src/handlers/FunctionHandler.cpp
 )
 
 set(HEADERS
 	src/helpers/Helper.h
-	src/helpers/FunctionHandler.h
-	src/helpers/CalcHelper.h
 
 	src/structs/Element.h
 	src/structs/Function.h
@@ -35,6 +33,8 @@ set(HEADERS
 
 	src/handlers/ParseHandler.h
 	src/handlers/CalculationHandler.h
+	src/handlers/EvaluateHandler.h
+	src/handlers/FunctionHandler.h
 )
 
 set(SRC ${CPP_FILES} ${HEADERS})

@@ -6,16 +6,15 @@
 #include <vector>
 #include "../structs/Element.h"
 
-using namespace std;
 using namespace structs;
 
 namespace helpers {
     class Helper {
         public:
-            static string elemsToStr(vector<Element> elems);
+            static std::string elemsToStr(std::vector<Element> elems);
             static double factorial(double num); // Actually uses the gamma function
-            static int find_last_bracket(vector<Element> elems, bool isopen);
-            static void tolower(string& str);
+            static int find_last_bracket(std::vector<Element> elems, bool isopen);
+            static void tolower(std::string& str);
             static double deg(double* rad);
             static double rad(double* deg);
     };

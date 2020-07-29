@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "helpers/CalcHelper.h"
 #include "helpers/Helper.h"
-
-using namespace std;
+#include "handlers/ParseHandler.h"
+#include "structs/Expression.h"
 
 // Whitespace characters
 char ws_[] = " \t\n\r\f\v";
@@ -19,12 +18,12 @@ bool isOneOf(char ch, char comp[], int complen) { // Take length of array as par
 }
 
 // A whitespace trimming function (not from stack overflow, but here's a link that could be helpful) -- https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
-string removeAll(string* str, int ws_arrsize = 6, char rem[] = ws_) { // Take length of array as parameter
-    stringstream ss; // Automatically initialised
+std::string removeAll(std::string* str, int ws_arrsize = 6, char rem[] = ws_) { // Take length of array as parameter
+    std::stringstream ss; // Automatically initialised
 
     for(int i = 0; i < str->length(); i++) {
         // If the current character is not a whitespace character, insert it into the stringstream
-        if(!isOneOf(str->at(i), ws_, ws_arrsize)) {
+        if(!isOneOf(str->at(i), rem, ws_arrsize)) {
             ss << str->at(i);
         }
     }
@@ -34,15 +33,35 @@ string removeAll(string* str, int ws_arrsize = 6, char rem[] = ws_) { // Take le
 // Start point
 int main() {
     while(true) {
-        cout << "Enter thing to calculate: ";
-        string str;
+        std::cout << "Enter thing to calculate: ";
+        std::string str;
         // Use getline() because that gets the whole line, 'cin >> var' apparently only gets until the first space
-        getline(cin, str);
+        getline(std::cin, str);
 
         // Trim all whitespaces from the string
         str = removeAll(&str); // Pass string pointer to method
 
-        cout << "new string: " << str << endl;
+		if(str == "exit") {
+			break;
+		}
+
+        std::cout << "new string: " << str << std::endl;
+
+		// Use ParseHandler to get a vector list of elements that make up an expression
+		std::vector<Element> elems = handlers::ParseHandler::parse(str);
+
+		std::stringstream* err = new std::stringstream();
+		handlers::ParseHandler::check(elems, err);
+		Expression expr = Expression(elems);
+
+// 		std::cout << expr.elemsToString() << std::endl; // This REALLY doesn't seem to work for some reason
+		std::cout << err->str() << std::endl;
+
+		// Use EvaluateHandler to calculate the value of the expression
+	}
+}
+
+		/*
 
         // Break loop if the string is "exit" (Note: the equality operator compares the actual string content)
         if(str == "exit") {
@@ -70,8 +89,4 @@ int main() {
         double ans = helpers::CalcHelper::calculate(input, arrlen);
         cout << ">> " << ans << endl;
     }
-}
-
-/*int arrlen(char[] arr) {
-    return sizeof(*arr) / sizeof(arr[0]);
 }*/
