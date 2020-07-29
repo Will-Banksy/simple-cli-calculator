@@ -1,16 +1,10 @@
 # Simple CLI Calculator
 
-Just solves simple expressions (no variables).
-
-Constants defined: PI, TAU, E.
-
-Functions defined: sin, cos, tan.
+A work in progress, will just solve simple expressions (no variables, differentiation, anything like that).
 
 ### Compile and Run
 
-Only tested on Manjaro Linux
-
-**Do not expect this to work well/at all, it is a work in progress**
+Only tested on Linux
 
 To compile:
 
@@ -22,4 +16,4 @@ make
 
 To run:
 
-The executable will be called Calculator, it will be in the build directory
+The executable will be called Calculator, it will be in the build directory, so just `./Calculator`
