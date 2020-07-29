@@ -63,23 +63,43 @@ bool structs::Element::isOperator(char ch) {
 }
 
 std::string structs::Element::toString() {
+	std::stringstream stream;
 	switch(type) {
 		case NUMBER:
-			return std::to_string(num_value);
+			stream << "|num[" << num_value << "]func[" << func_value << "]type[" << type << "] |";
+			break;
 
 		case OPERATOR:
-			return std::to_string(op_value);
+			stream << op_value;
+			break;
 
 		case ARGUMENT_SEPARATOR:
-			return ",";
+			stream << ",";
+			break;
 
 		case BRACKET:
-			return isOpenBracket() ? "(" : ")";
+			stream << (isOpenBracket() ? "(" : ")");
+			break;
 
 		case FUNCTION:
-			return func_value;
+			stream << func_value;
+			break;
 
 		default:
 			return "";
 	}
+	stream.flush();
+	return stream.str();
+}
+
+std::string Element::toString(char ch) {
+	std::stringstream str;
+	str << ch;
+	return str.str();
+}
+
+std::string structs::Element::toString(double num) {
+	std::stringstream str;
+	str << num;
+	return str.str();
 }

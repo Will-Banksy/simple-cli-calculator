@@ -1,4 +1,5 @@
 #include "Expression.h"
+#include <iostream>
 
 Expression::Expression(std::vector<Element> elems, int start, int end) {
 	if(start == 0 & end == -1) {
@@ -12,6 +13,8 @@ Expression::Expression(std::vector<Element> elems, int start, int end) {
 		}
 	}
 
+	std::cout << "Type: " << this->elems->at(0).type << std::endl;
+
 	// Check if there is an invalid element in the expression. Invalid elements are: Commas, Brackets
 	/*for(Element elem : *this->elems) {
 		if(elem.type == BRACKET || elem.type == ARGUMENT_SEPARATOR) {
@@ -21,7 +24,7 @@ Expression::Expression(std::vector<Element> elems, int start, int end) {
 	}*/
 }
 
-bool structs::Expression::isValid(std::stringstream* err) {
+bool Expression::isValid(std::stringstream* err) {
 	std::string elemsStr = elemsToString();
 	// Check if there is an invalid element in the expression. Invalid elements are: Commas, Brackets, Functions
 	for(Element elem : *this->elems) {
@@ -63,15 +66,17 @@ bool structs::Expression::isValid(std::stringstream* err) {
 }
 
 
-std::string structs::Expression::elemsToString() {
+std::string Expression::elemsToString() {
 	std::stringstream stream;
-	for(Element elem : *elems) {
-		stream << elem.toString();
+	stream << "> ";
+	for(int i = 0; i < elems->size(); i++) {
+		stream << elems->at(i).toString() << "<-type=" << elems->at(i).type << " ¬ "; // FIXME: For some reason, in this method, the first element is found to always have a type of zero? Even if it has it's proper type in the constructor??
 	}
+	stream.flush();
 	return stream.str();
 }
 
-std::vector<Element>* structs::Expression::parse() {
+std::vector<Element>* Expression::parse() {
 	for(int i = 0; i < elems->size(); i++) {
 		if(i > 0) {
 			Element* curr = &elems->at(i);

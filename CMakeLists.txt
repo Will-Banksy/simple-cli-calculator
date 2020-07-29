@@ -6,8 +6,6 @@ project(Calculator VERSION 1.0)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
 
 set(CPP_FILES
 	src/main.cpp

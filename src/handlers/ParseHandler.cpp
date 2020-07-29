@@ -97,6 +97,15 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 		err = new std::stringstream();
 	}
 
+	if(elems.size() == 1) {
+		Element& curr = elems.at(0);
+
+		if(curr.type != NUMBER) {
+			*err << "ERROR: " << curr.toString() << " is not an expression" << std::endl;
+			return false;
+		}
+	}
+
 	bool inFunctionArgs = false;
 	int bracketDepth = 0;
 	std::stack<BracketInfo> brackets;
@@ -111,7 +120,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 		} else if(curr.isCloseBracket()) {
 			// Check if there is actually a bracket to close (aka if an opening bracket has come before this, at the same depth)
 			if(brackets.empty()) {
-				*err << "ERROR: Closing bracket before opening bracket (at " << i << ")" << std::endl;
+				*err << "ERROR: Closing bracket before opening bracket " << std::endl;
 				return false;
 			}
 			bracketDepth--;
@@ -145,7 +154,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 
 			// Check if operators are in the correct places
 			if(curr.isOperator('!')) {
-				if(!(prev.type == NUMBER || prev.isCloseBracket() || prev.type == ARGUMENT_SEPARATOR)) { // If it's not after a number or closing bracket or comma
+				if(!(prev.type == NUMBER || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
 					*err << "ERROR: Invalid placement of ! operator after " << prev.toString() << std::endl;
 					return false;
 				}
@@ -155,7 +164,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			} else if(prev.type == OPERATOR && !prev.isOperator('!')) { // Check other operators
 				if(pprev) {
 					bool isValidOperator = pprev->isCloseBracket() || pprev->type == NUMBER || pprev->isOperator('!');
-					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.type == NUMBER);
+					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.type == NUMBER || curr.type == FUNCTION);
 					if(!isValidOperator) {
 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
 						return false;

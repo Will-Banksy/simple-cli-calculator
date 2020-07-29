@@ -8,10 +8,15 @@ Only tested on Linux
 
 To compile:
 
-Create build directory in the root directory of the project, and `cd` into it. Then:
+Create build directory in the root directory of the project, and `cd` into it. Then, using Makefile:
 ```bash
 cmake ..
 make
+```
+Or, using ninja:
+```bash
+cmake -GNinja ..
+ninja
 ```
 
 To run:

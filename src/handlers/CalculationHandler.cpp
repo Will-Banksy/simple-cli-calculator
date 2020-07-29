@@ -15,7 +15,7 @@ void CalculationHandler::initialiseConstants() {
 	constants["tau"] = M_PI * 2;
 }
 
-std::vector<Function> handlers::CalculationHandler::getFunctions() {
+std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe include versine and others: https://en.wikipedia.org/wiki/Versine | https://en.wikipedia.org/wiki/Cofunction
 	std::vector<Function> fns;
 
 	// Trigonometric functions
@@ -39,6 +39,17 @@ std::vector<Function> handlers::CalculationHandler::getFunctions() {
 	}));
 	fns.push_back(Function("atan2", 2, [](std::vector<double> args) {
 		return atan2(args.at(0), args.at(1));
+	}));
+
+	// More Trigonometric functions
+	fns.push_back(Function("csc", 2, [](std::vector<double> args) {
+		return 1 / sin(args.at(0));
+	}));
+	fns.push_back(Function("sec", 2, [](std::vector<double> args) {
+		return 1 / cos(args.at(0));
+	}));
+	fns.push_back(Function("cot", 2, [](std::vector<double> args) {
+		return 1 / tan(args.at(0));
 	}));
 
 	// Hyperbolic functions

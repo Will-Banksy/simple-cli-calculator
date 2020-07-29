@@ -39,6 +39,10 @@ namespace structs {
 			bool isOperator(char ch);
 
 			std::string toString();
+
+		private:
+			std::string toString(char ch);
+			std::string toString(double num);
     };
 }
 

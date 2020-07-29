@@ -1,4 +1,3 @@
-// These two preprocessors, and the #endif at the end of the file, is a header guard - https://www.learncpp.com/cpp-tutorial/header-guards/
 #ifndef FUNCTION_H
 #define FUNCTION_H
 

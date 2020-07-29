@@ -54,7 +54,7 @@ int main() {
 		handlers::ParseHandler::check(elems, err);
 		Expression expr = Expression(elems);
 
-// 		std::cout << expr.elemsToString() << std::endl; // This REALLY doesn't seem to work for some reason
+		std::cout << std::string(expr.elemsToString()) << std::endl; // This REALLY doesn't seem to work for some reason
 		std::cout << err->str() << std::endl;
 
 		// Use EvaluateHandler to calculate the value of the expression

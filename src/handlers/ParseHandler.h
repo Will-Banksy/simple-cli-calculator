@@ -19,8 +19,9 @@ namespace handlers {
 			static bool check(std::vector<Element>& elems, std::stringstream* err = nullptr);
 
 		private:
-			struct BracketInfo {
+			struct BracketInfo { // Default visibility for structs is public - for classes it's private
 				int openPos;
+				int closePos;
 				bool hasFunction;
 				int depth;
 
