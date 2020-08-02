@@ -27,7 +27,7 @@ namespace structs {
 			 */
 			std::vector<Element>* parse();
 
-			std::vector<Element>* elems;
+			std::vector<Element> elems;
 
 		private:
 			bool parsed;

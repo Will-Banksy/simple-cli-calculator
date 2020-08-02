@@ -10,6 +10,9 @@ namespace handlers {
 	class EvaluateHandler {
 		public:
 			static double evaluate(std::vector<Element>& elems);
+
+		private:
+			static void applyOperator(std::vector<Element> elems, int opIndex, short& numRemoved);
 	};
 }
 

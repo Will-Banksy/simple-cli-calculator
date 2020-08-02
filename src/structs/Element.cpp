@@ -46,6 +46,15 @@ Element::Element(Type type) {
     bracket_isopen = false;
 }
 
+Element::Element(const Element& elem) {
+	type = elem.type;
+	num_value = elem.num_value;
+	op_value = elem.op_value;
+	func_value = elem.func_value;
+	bracket_isopen = elem.bracket_isopen;
+}
+
+
 Element::~Element() {
     // Don't think I need to do anything here, as apparently you only need to manually deallocate memory if you initialise pointers with the 'new' operator
 }

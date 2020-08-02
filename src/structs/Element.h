@@ -22,6 +22,7 @@ namespace structs {
             Element(Type type, std::string val);
             Element(Type type, bool val);
             Element(Type type);
+			Element(const Element& elem); // Copy constructor
 
             // Destructor
             ~Element();

@@ -42,7 +42,7 @@ std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe in
 	}));
 
 	// More Trigonometric functions
-	fns.push_back(Function("csc", 2, [](std::vector<double> args) {
+	fns.push_back(Function("csc", 2, [](std::vector<double> args) { // cosec
 		return 1 / sin(args.at(0));
 	}));
 	fns.push_back(Function("sec", 2, [](std::vector<double> args) {
@@ -76,13 +76,13 @@ std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe in
 	fns.push_back(Function("ln", 1, [](std::vector<double> args) {
 		return log(args.at(0));
 	}));
-	fns.push_back(Function("log10", 1, [](std::vector<double> args) {
+	fns.push_back(Function("log10", 1, [](std::vector<double> args) { // log base 10
 		return log10(args.at(0));
 	}));
-	fns.push_back(Function("log", 2, [](std::vector<double> args) {
+	fns.push_back(Function("log", 2, [](std::vector<double> args) { // log base of first argument: https://ekuatio.com/en/how-to-calculate-logarithms-of-any-base-formula-of-the-base-change/
 		return log(args.at(0)) / log(args.at(1));
 	}));
-	fns.push_back(Function("exp", 1, [](std::vector<double> args) {
+	fns.push_back(Function("exp", 1, [](std::vector<double> args) { // exponential function - E ^ first argument
 		return exp(args.at(0));
 	}));
 
@@ -90,7 +90,7 @@ std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe in
 	fns.push_back(Function("sqrt", 1, [](std::vector<double> args) {
 		return sqrt(args.at(0));
 	}));
-	fns.push_back(Function("cbrt", 1, [](std::vector<double> args) {
+	fns.push_back(Function("cbrt", 1, [](std::vector<double> args) { // cube root
 		return cbrt(args.at(0));
 	}));
 	fns.push_back(Function("rt", 1, [](std::vector<double> args) {
