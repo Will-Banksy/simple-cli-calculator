@@ -4,6 +4,7 @@
 #include "helpers/Helper.h"
 #include "handlers/ParseHandler.h"
 #include "structs/Expression.h"
+#include "handlers/EvaluateHandler.h"
 
 // Whitespace characters
 char ws_[] = " \t\n\r\f\v";
@@ -54,8 +55,13 @@ int main() {
 		handlers::ParseHandler::check(elems, err);
 		Expression expr = Expression(elems);
 
-		std::cout << std::string(expr.elemsToString()) << std::endl; // This REALLY doesn't seem to work for some reason
+		std::cout << std::string(expr.elemsToString()) << std::endl;
 		std::cout << err->str() << std::endl;
+
+		handlers::EvaluateHandler::evaluate(elems);
+
+		Expression expr2 = Expression(elems);
+		std::cout << std::string(expr2.elemsToString()) << std::endl;
 
 		// Use EvaluateHandler to calculate the value of the expression
 	}

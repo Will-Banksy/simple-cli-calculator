@@ -5,7 +5,7 @@
 
 using namespace handlers;
 
-std::vector<Element> ParseHandler::parse(std::string expr, bool doCleanNegatives) {
+std::vector<Element> ParseHandler::parse(std::string expr, bool cleanNegatives) {
 	std::vector<Element> elems = std::vector<Element>();
 	bool isInNum = false;
 	bool isInStr = false;
@@ -33,10 +33,15 @@ std::vector<Element> ParseHandler::parse(std::string expr, bool doCleanNegatives
 			// If we have reached the end of the letter sequence, do the appropriate things
 			if(i == expr.size() - 1) {
 				goto endOfStr; // We want to do the same stuff as in the next else if, so just goto that label. This is my version of a 'safe' OR, at least in this context
-			} else if(!(/*isLetter(expr[i + 1]) || */(!isOpeningBracket(expr[i + 1]) && !isClosingBracket(expr[i + 1]) && !isOperator(expr[i + 1])))) {
+			} else if((isOpeningBracket(expr[i + 1]) || isClosingBracket(expr[i + 1]) || isOperator(expr[i + 1]))) {
 				endOfStr:
+				bool isConstant = i == expr.size() - 1 ? true : !isOpeningBracket(expr[i + 1]);
 				isInStr = false;
-				elems.push_back(Element(FUNCTION, stream.str()));
+				if(isConstant) {
+					elems.push_back(Element(CONSTANT, stream.str()));
+				} else {
+					elems.push_back(Element(FUNCTION, stream.str()));
+				}
 			}
 		} else if(isPartOfNum(ch) && !isInStr) { // If the current character is part of a number
 			if(!isInNum) {
@@ -58,8 +63,8 @@ std::vector<Element> ParseHandler::parse(std::string expr, bool doCleanNegatives
 		}
 	}
 
-	if(doCleanNegatives) {
-		cleanNegatives(elems);
+	if(cleanNegatives) {
+		ParseHandler::cleanNegatives(elems);
 	}
 
 	// Just a debugging thing
@@ -100,7 +105,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 	if(elems.size() == 1) {
 		Element& curr = elems.at(0);
 
-		if(curr.type != NUMBER) {
+		if(!curr.isNumber()) {
 			*err << "ERROR: " << curr.toString() << " is not an expression" << std::endl;
 			return false;
 		}
@@ -147,14 +152,14 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			}
 
 			// Check two numbers aren't somehow together
-			if(curr.type == NUMBER && prev.type == NUMBER) {
+			if(curr.isNumber() && prev.isNumber()) {
 				*err << "ERROR: Numbers " << curr.num_value << " and " << prev.num_value << " cannot be together" << std::endl;
 				return false;
 			}
 
 			// Check if operators are in the correct places
 			if(curr.isOperator('!')) {
-				if(!(prev.type == NUMBER || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
+				if(!(prev.isNumber() || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
 					*err << "ERROR: Invalid placement of ! operator after " << prev.toString() << std::endl;
 					return false;
 				}
@@ -163,8 +168,8 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 				return false;
 			} else if(prev.type == OPERATOR && !prev.isOperator('!')) { // Check other operators
 				if(pprev) {
-					bool isValidOperator = pprev->isCloseBracket() || pprev->type == NUMBER || pprev->isOperator('!');
-					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.type == NUMBER || curr.type == FUNCTION);
+					bool isValidOperator = pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!');
+					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.isNumber() || curr.type == FUNCTION);
 					if(!isValidOperator) {
 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
 						return false;

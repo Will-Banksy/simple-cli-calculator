@@ -5,14 +5,15 @@ using namespace handlers;
 
 std::vector<char> CalculationHandler::operators = { ',', '+', '-', '*', '/', '^', '!', '%' };
 // std::vector<char> CalculationHandler::ops_bodmas = { '^', '/', '*', '-', '+' };
-std::map<std::string, double> CalculationHandler::constants = std::map<std::string, double>();
+std::map<std::string, double> CalculationHandler::constants = getConstants();
 std::vector<Function> CalculationHandler::functions = getFunctions();
 
-void CalculationHandler::initialiseConstants() {
-	constants = std::map<std::string, double>();
-	constants["pi"] = M_PI;
-	constants["e"] = M_E;
-	constants["tau"] = M_PI * 2;
+std::map<std::string, double> CalculationHandler::getConstants() {
+	std::map<std::string, double> consts;
+	consts["pi"] = M_PI;
+	consts["e"] = M_E;
+	consts["tau"] = M_PI * 2;
+	return consts;
 }
 
 std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe include versine and others: https://en.wikipedia.org/wiki/Versine | https://en.wikipedia.org/wiki/Cofunction

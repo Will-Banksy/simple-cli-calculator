@@ -22,7 +22,13 @@ Element::Element(Type type, char val) {
 
 Element::Element(Type type, std::string val) {
     this->type = type;
-    func_value = val;
+	if(this->type == FUNCTION) {
+		func_value = val;
+		const_value = "";
+	} else if(this->type == CONSTANT) {
+		const_value = val;
+		func_value = "";
+	}
 
     num_value = 0;
     op_value = 0;
@@ -51,6 +57,7 @@ Element::Element(const Element& elem) {
 	num_value = elem.num_value;
 	op_value = elem.op_value;
 	func_value = elem.func_value;
+	const_value = elem.const_value;
 	bracket_isopen = elem.bracket_isopen;
 }
 
@@ -67,15 +74,19 @@ bool Element::isCloseBracket() {
     return type == BRACKET && !bracket_isopen;
 }
 
-bool structs::Element::isOperator(char ch) {
+bool Element::isOperator(char ch) {
 	return type == OPERATOR && op_value == ch;
 }
 
-std::string structs::Element::toString() {
+bool Element::isNumber() {
+	return type == NUMBER || type == CONSTANT;
+}
+
+std::string Element::toString() {
 	std::stringstream stream;
 	switch(type) {
 		case NUMBER:
-			stream << "|num[" << num_value << "]func[" << func_value << "]type[" << type << "] |";
+			stream << num_value;
 			break;
 
 		case OPERATOR:
@@ -94,21 +105,13 @@ std::string structs::Element::toString() {
 			stream << func_value;
 			break;
 
+		case CONSTANT:
+			stream << const_value;
+			break;
+
 		default:
 			return "";
 	}
 	stream.flush();
 	return stream.str();
-}
-
-std::string Element::toString(char ch) {
-	std::stringstream str;
-	str << ch;
-	return str.str();
-}
-
-std::string structs::Element::toString(double num) {
-	std::stringstream str;
-	str << num;
-	return str.str();
 }

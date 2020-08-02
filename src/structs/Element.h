@@ -10,6 +10,7 @@ namespace structs {
         NUMBER,
         OPERATOR,
         FUNCTION,
+		CONSTANT,
         BRACKET,
         ARGUMENT_SEPARATOR // ',', a comma
     };
@@ -33,17 +34,18 @@ namespace structs {
             double num_value;
             char op_value;
             std::string func_value;
+			std::string const_value;
             bool bracket_isopen;
 
             bool isOpenBracket();
             bool isCloseBracket();
 			bool isOperator(char ch);
+			/**
+			 * Equivalent to type == NUMBER || type == CONSTANT
+			 */
+			bool isNumber();
 
 			std::string toString();
-
-		private:
-			std::string toString(char ch);
-			std::string toString(double num);
     };
 }
 

@@ -17,9 +17,8 @@ namespace handlers {
 			static std::vector<Function> functions;
 
 		private:
-			static void initialiseConstants();
 			static std::vector<Function> getFunctions();
-
+			static std::map<std::string, double> getConstants();
 	};
 }
 

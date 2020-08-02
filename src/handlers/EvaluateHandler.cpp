@@ -14,7 +14,7 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 	}
 	std::stringstream& err = *errStream;
 
-	bool syntaxErrors = ParseHandler::check(elems, &err);
+	bool syntaxErrors = !ParseHandler::check(elems, &err);
 	if(syntaxErrors) {
 		if(toStdout) {
 			std::cout << err.str();
@@ -30,9 +30,17 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 
 	// Do calculations ---
 
-	// First evaluate any factorials
+	// First substitute any constants
 	for(int i = 0; i < elems.size(); i++) {
-		// First, if it's a factorial, evaluate it
+		if(elems.at(i).type == CONSTANT) {
+			if(CalculationHandler::constants.count(elems.at(i).const_value) > 0) {
+				elems[i] = Element(NUMBER, CalculationHandler::constants[elems.at(i).const_value]);
+			}
+		}
+	}
+
+	// Then evaluate any factorials
+	for(int i = 0; i < elems.size(); i++) {
 		if(elems.at(i).isOperator('!') && !elems.at(i - 1).isCloseBracket()) { // Check it's not a '(...)!' situation
 			short rem = 1;
 			applyOperator(elems, i, rem);
@@ -43,7 +51,7 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 	return 0;
 }
 
-void EvaluateHandler::applyOperator(std::vector<Element> elems, int opIndex, short& numRemoved) {
+void EvaluateHandler::applyOperator(std::vector<Element>& elems, int opIndex, short& numRemoved) {
 	Element& op = elems.at(opIndex);
 	Element& before = elems.at(opIndex - 1);
 
