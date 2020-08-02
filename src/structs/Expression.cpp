@@ -27,7 +27,6 @@ bool Expression::isValid(std::stringstream* err) {
 	// Check if there is an invalid element in the expression. Invalid elements are: Commas, Brackets, Functions
 	for(Element elem : this->elems) {
 		if(elem.type == BRACKET || elem.type == ARGUMENT_SEPARATOR || elem.type == FUNCTION) {
-			// Do fatal error thing here
 			*err << "ERROR: " << elemsStr << " is not an expression\n";
 			return false;
 		}

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "src/structs/Element.h"
+#include "structs/Element.h"
 #include "CalculationHandler.h"
 
 using namespace structs;

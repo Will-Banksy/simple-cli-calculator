@@ -6,12 +6,20 @@
 
 using namespace handlers;
 
-double EvaluateHandler::evaluate(std::vector<Element>& elems) {
-	std::stringstream err;
-	bool errors = ParseHandler::check(elems, &err);
-	if(errors) {
-		std::cout << err.str();
-		std::cout.flush();
+double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream* errStream) {
+	bool toStdout = false;
+	if(!errStream) {
+		errStream = new std::stringstream();
+		toStdout = true; // If a stringstream hasn't been provided, print errors to standard output
+	}
+	std::stringstream& err = *errStream;
+
+	bool syntaxErrors = ParseHandler::check(elems, &err);
+	if(syntaxErrors) {
+		if(toStdout) {
+			std::cout << err.str();
+			std::cout.flush();
+		}
 		return 0;
 	}
 

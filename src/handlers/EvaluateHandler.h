@@ -9,7 +9,7 @@ using namespace structs;
 namespace handlers {
 	class EvaluateHandler {
 		public:
-			static double evaluate(std::vector<Element>& elems);
+			static double evaluate(std::vector<Element>& elems, std::stringstream* errStream = nullptr);
 
 		private:
 			static void applyOperator(std::vector<Element> elems, int opIndex, short& numRemoved);
