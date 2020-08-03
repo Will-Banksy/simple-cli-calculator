@@ -35,18 +35,45 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 		if(elems.at(i).type == CONSTANT) {
 			if(CalculationHandler::constants.count(elems.at(i).const_value) > 0) {
 				elems[i] = Element(NUMBER, CalculationHandler::constants[elems.at(i).const_value]);
+			} else {
+				(toStdout ? std::cout : err) << "ERROR: Constant " << elems.at(i).const_value << " not defined" << std::endl;
+				return 0;
 			}
 		}
 	}
 
-	// Then evaluate any factorials
-	for(int i = 0; i < elems.size(); i++) {
-		if(elems.at(i).isOperator('!') && !elems.at(i - 1).isCloseBracket()) { // Check it's not a '(...)!' situation
-			short rem = 1;
-			applyOperator(elems, i, rem);
-			continue;
+	// TODO decide on an approach
+	// Now how am I actually going to approach this?
+	// Maybe I can get a list of all the brackets, and evaluate them that way? Or each iteration, get the innermost bracket pair?
+	// Or I could split it into vector of snippets, that I can then evaluate one by one?
+
+	// A list of all bracket pairs will be useful, depending on my decided approach
+// 	std::vector<BracketInfo> brackets;
+// 	int bracketDepth = 0;
+// 	for(int i = 0; i < elems.size(); i++) {
+// 		if(i > 0) {
+// 			Element& prev = elems.at(i - 1);
+// 			Element& curr = elems.at(i);
+//
+// 			if(curr.isOpenBracket()) {
+// 				bracketDepth++;
+// 				bool function = prev.type == FUNCTION;
+// 				brackets.push_back(BracketInfo(i, function, bracketDepth));
+// 			}
+// 		}
+// 	}
+
+	// Enter main loop for evaluating. Maybe.
+// 	while(elems.size() > 1) {
+		// Then evaluate any factorials
+		for(int i = 0; i < elems.size(); i++) {
+			if(elems.at(i).isOperator('!') && !elems.at(i - 1).isCloseBracket()) { // Check it's not a '(...)!' situation
+				short rem = 1;
+				applyOperator(elems, i, rem);
+				continue;
+			}
 		}
-	}
+// 	}
 
 	return 0;
 }

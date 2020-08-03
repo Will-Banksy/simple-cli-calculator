@@ -9,15 +9,15 @@
 using namespace structs;
 
 namespace helpers {
-    class Helper {
-        public:
-            static std::string elemsToStr(std::vector<Element> elems);
-            static double factorial(double num); // Actually uses the gamma function
-            static int find_last_bracket(std::vector<Element> elems, bool isopen);
-            static void tolower(std::string& str);
-            static double deg(double* rad);
-            static double rad(double* deg);
-    };
+	class Helper {
+		public:
+			static std::string elemsToStr(std::vector<Element> elems);
+			static double factorial(double num); // Actually uses the gamma function
+			static int find_last_bracket(std::vector<Element> elems, bool isopen);
+			static void tolower(std::string& str);
+			static double deg(double* rad);
+			static double rad(double* deg);
+	};
 }
 
 #endif

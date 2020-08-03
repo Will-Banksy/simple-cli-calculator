@@ -3,25 +3,25 @@
 using namespace structs;
 
 Element::Element(Type type, double val) {
-    this->type = type;
-    num_value = val;
+	this->type = type;
+	num_value = val;
 
-    op_value = 0;
-    func_value = "";
-    bracket_isopen = false;
+	op_value = 0;
+	func_value = "";
+	bracket_isopen = false;
 }
 
 Element::Element(Type type, char val) {
-    this->type = type;
-    op_value = val;
+	this->type = type;
+	op_value = val;
 
-    num_value = 0;
-    func_value = "";
-    bracket_isopen = false;
+	num_value = 0;
+	func_value = "";
+	bracket_isopen = false;
 }
 
 Element::Element(Type type, std::string val) {
-    this->type = type;
+	this->type = type;
 	if(this->type == FUNCTION) {
 		func_value = val;
 		const_value = "";
@@ -30,26 +30,26 @@ Element::Element(Type type, std::string val) {
 		func_value = "";
 	}
 
-    num_value = 0;
-    op_value = 0;
-    bracket_isopen = false;
+	num_value = 0;
+	op_value = 0;
+	bracket_isopen = false;
 }
 
 Element::Element(Type type, bool val) {
-    this->type = type;
-    bracket_isopen = val;
+	this->type = type;
+	bracket_isopen = val;
 
-    num_value = 0;
-    op_value = 0;
-    func_value = "";
+	num_value = 0;
+	op_value = 0;
+	func_value = "";
 }
 
 Element::Element(Type type) {
 	this->type = type;
-    num_value = 0;
-    op_value = 0;
-    func_value = "";
-    bracket_isopen = false;
+	num_value = 0;
+	op_value = 0;
+	func_value = "";
+	bracket_isopen = false;
 }
 
 Element::Element(const Element& elem) {
@@ -63,15 +63,15 @@ Element::Element(const Element& elem) {
 
 
 Element::~Element() {
-    // Don't think I need to do anything here, as apparently you only need to manually deallocate memory if you initialise pointers with the 'new' operator
+	// Don't think I need to do anything here, as apparently you only need to manually deallocate memory if you initialise pointers with the 'new' operator
 }
 
 bool Element::isOpenBracket() {
-    return type == BRACKET && bracket_isopen;
+	return type == BRACKET && bracket_isopen;
 }
 
 bool Element::isCloseBracket() {
-    return type == BRACKET && !bracket_isopen;
+	return type == BRACKET && !bracket_isopen;
 }
 
 bool Element::isOperator(char ch) {

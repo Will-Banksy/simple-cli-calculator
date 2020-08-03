@@ -1,4 +1,5 @@
 #include "Expression.h"
+#include "handlers/ParseHandler.h"
 
 Expression::Expression(std::vector<Element> elems, int start, int end) {
 	if(start == 0 & end == -1) {
@@ -27,39 +28,12 @@ bool Expression::isValid(std::stringstream* err) {
 	// Check if there is an invalid element in the expression. Invalid elements are: Commas, Brackets, Functions
 	for(Element elem : this->elems) {
 		if(elem.type == BRACKET || elem.type == ARGUMENT_SEPARATOR || elem.type == FUNCTION) {
-			*err << "ERROR: " << elemsStr << " is not an expression\n";
+			*err << "ERROR: " << elemsStr << " is not an expression" << std::endl;
 			return false;
 		}
 	}
 
-	if(elems.at(0).type == OPERATOR) {
-		*err << "ERROR: Operator " << elems.at(0).op_value << " cannot be at the start of an expression\n";
-		return false;
-	}
-
-	if(elems.at(elems.size() - 1).type == OPERATOR && elems.at(elems.size() - 1).op_value != '!') {
-		*err << "ERROR: Operator " << elems.at(elems.size() - 1).op_value << " cannot be at the end of an expression\n";
-		return false;
-	}
-
-	for(int i = 0; i < elems.size(); i++) {
-		if(i > 0) {
-			Element* curr = &elems.at(i);
-			Element* prev = &elems.at(i - 1);
-
-			if(prev->type == NUMBER) {
-				if(curr->type == NUMBER) {
-					*err << "ERROR: Numbers " << prev->num_value << " and " << curr->num_value << " cannot be together";
-				}
-			} else if(prev->type == OPERATOR) {
-				if(curr->type == OPERATOR && prev->op_value != '!') {
-					*err << "ERROR: Operators " << prev->op_value << " and " << curr->op_value << " cannot be together";
-				}
-			}
-		}
-	}
-
-	return true;
+	return handlers::ParseHandler::check(elems, err);
 }
 
 

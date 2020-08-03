@@ -9,6 +9,19 @@
 using namespace structs;
 
 namespace handlers {
+	struct BracketInfo { // Default visibility for structs is public - for classes it's private
+		int openPos;
+		int closePos;
+		bool hasFunction;
+		int depth;
+
+		BracketInfo(int openPos, bool hasFunction, int depth) {
+			this->openPos = openPos;
+			this->hasFunction = hasFunction;
+			this->depth = depth;
+		}
+	};
+
 	class ParseHandler {
 		public:
 			static std::vector<Element> parse(std::string expr, bool cleanNegatives = true);
@@ -19,19 +32,6 @@ namespace handlers {
 			static bool check(std::vector<Element>& elems, std::stringstream* err = nullptr);
 
 		private:
-			struct BracketInfo { // Default visibility for structs is public - for classes it's private
-				int openPos;
-				int closePos;
-				bool hasFunction;
-				int depth;
-
-				BracketInfo(int openPos, bool hasFunction, int depth) {
-					this->openPos = openPos;
-					this->hasFunction = hasFunction;
-					this->depth = depth;
-				}
-			};
-
 			// Some helper functions
 			inline static bool isLetter(char ch);
 			inline static bool isOpeningBracket(char ch);

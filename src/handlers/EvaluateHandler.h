@@ -13,6 +13,12 @@ namespace handlers {
 
 		private:
 			static void applyOperator(std::vector<Element>& elems, int opIndex, short& numRemoved);
+			/**
+			 * Evaluates a section of an expression, or a 'Snippet'
+			 * A snippet cannot contain functions, brackets or commas (argument separators)
+			 */
+			static void evalSnippet(std::vector<Element>& elems, int start, int end);
+			static int findCloseBracket(std::vector<Element>& elems, int afterIndex, bool* hasArguments = nullptr);
 	};
 }
 
