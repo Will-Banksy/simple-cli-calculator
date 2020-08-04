@@ -18,7 +18,9 @@ namespace handlers {
 			 * A snippet cannot contain functions, brackets or commas (argument separators)
 			 */
 			static void evalSnippet(std::vector<Element>& elems, int start, int end);
-			static int findCloseBracket(std::vector<Element>& elems, int afterIndex, bool* hasArguments = nullptr);
+			/**
+			 * Returns the index of the corresponding closing bracket to the one at the index specified by afterIndex, returns -1 if one doesn't exist			 */
+			static int findCloseBracket(std::vector<Element>& elems, int afterIndex);
 	};
 }
 
