@@ -21,4 +21,4 @@ ninja
 
 To run:
 
-The executable will be called Calculator, it will be in the build directory, so just `./Calculator`
+The executable will be called clicalc, it will be in the build directory, so just `./clicalc`

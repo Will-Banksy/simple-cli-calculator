@@ -21,7 +21,7 @@ namespace structs {
 			Element(Type type, double val);
 			Element(Type type, char val);
 			Element(Type type, std::string val);
-			Element(Type type, bool val, bool openBracketNegative = false);
+			Element(Type type, bool val);
 			Element(Type type);
 			Element(const Element& elem); // Copy constructor
 
@@ -36,7 +36,6 @@ namespace structs {
 			std::string func_value;
 			std::string const_value;
 			bool bracket_isopen;
-			bool openbracket_isnegative;
 
 			bool isOpenBracket();
 			bool isCloseBracket();

@@ -13,8 +13,12 @@ std::vector<Element> ParseHandler::parse(std::string expr, bool cleanNegatives) 
 	for(int i = 0; i < expr.size(); i++) {
 		char ch = expr[i];
 		if(isOpeningBracket(ch)) {
-			bool isNegative = i > 0 ? false : elems.at(i - 1).openbracket_isnegative; // FIXME: Make this check if the '-' is an operator or a negative sign
-			elems.push_back(Element(BRACKET, true, isNegative)); // If the character is a bracket, add it to the end of the vector
+// 			bool isNegative = i > 0 ? expr[i - 1] == '-' : false;
+// 			isNegative = isNegative && (i > 1 ? isOperator(expr[i - 2]) : true); // If the character 2 back is an operator, or there isn't a character 2 back
+// 			if(isNegative) { // If this open bracket is negative, then we need to delete the actual negative
+//
+// 			}
+			elems.push_back(Element(BRACKET, true)); // If the character is a bracket, add it to the end of the vector
 		} else if(isClosingBracket(ch)) {
 			elems.push_back(Element(BRACKET, false));
 		} else if(isOperator(ch)) {
@@ -169,7 +173,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 					return false;
 				}
 			} else if(elems.size() < 3 && curr.type == OPERATOR) { // In that case there's not enough room for an expression both sides of the operator
-				*err << "ERROR: Operator " << curr.op_value << " must come after and be followed by an expression" << std::endl;
+				*err << "ERROR: Operator " << curr.op_value << " must come after and be followed by an expression" << std::endl; // TODO: Make this check if there is a '-' that would make a bracket negative, and allow it
 				return false;
 			} else if(prev.type == OPERATOR && !prev.isOperator('!')) { // Check other operators
 				if(pprev) {

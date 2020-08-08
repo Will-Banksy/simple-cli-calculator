@@ -41,11 +41,11 @@ set(HEADERS
 set(SRC ${CPP_FILES} ${HEADERS})
 
 # Add all source files needed to build executable, with the first argument the name for the executable
-add_executable(Calculator ${SRC})
+add_executable(clicalc ${SRC})
 
 # Add the include path for header files (in this case just the source directory). Can now include files like so: '#include <dir>/<file>' instead of '#include src/<dir>/<file>'
 # target_include_directories just includes directories for a single target (an executable in this case)
-target_include_directories(Calculator PRIVATE src)
+target_include_directories(clicalc PRIVATE src)
 
 # See https://ncona.com/2019/03/building-a-cpp-project-with-cmake/ for info on cmake
 # Also see https://cmake.org/cmake/help/latest/guide/tutorial/index.html for cmake tutorial
