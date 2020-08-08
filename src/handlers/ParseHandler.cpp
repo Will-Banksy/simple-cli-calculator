@@ -73,8 +73,11 @@ std::vector<Element> ParseHandler::parse(std::string expr, bool cleanNegatives) 
 	return elems;
 }
 
-std::vector<Element> ParseHandler::cleanNegatives(std::vector<Element>& elems) {
-	for(int i = 0; i < elems.size(); i++) {
+std::vector<Element> ParseHandler::cleanNegatives(std::vector<Element>& elems, int start, int end) {
+	if(end == -1) {
+		end = elems.size();
+	}
+	for(int i = start; i < end; i++) {
 		if(i > 0) {
 			Element* curr = &elems.at(i);
 			Element* prev = &elems.at(i - 1);
@@ -158,6 +161,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			}
 
 			// Check if operators are in the correct places
+			// FIXME: ... + -(...) case is not accounted for. Handle this somehow (Maybe a field inside Element?)
 			if(curr.isOperator('!')) {
 				if(!(prev.isNumber() || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
 					*err << "ERROR: Invalid placement of ! operator after " << prev.toString() << std::endl;

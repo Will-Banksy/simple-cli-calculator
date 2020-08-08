@@ -19,7 +19,8 @@ namespace handlers {
 			 */
 			static void evalSnippet(std::vector<Element>& elems, int start, int end);
 			/**
-			 * Returns the index of the corresponding closing bracket to the one at the index specified by afterIndex, returns -1 if one doesn't exist			 */
+			 * Returns the index of the corresponding closing bracket to the one at the index specified by afterIndex, returns -1 if one doesn't exist
+			 */
 			static int findCloseBracket(std::vector<Element>& elems, int afterIndex);
 	};
 }

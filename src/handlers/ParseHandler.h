@@ -25,7 +25,11 @@ namespace handlers {
 	class ParseHandler {
 		public:
 			static std::vector<Element> parse(std::string expr, bool cleanNegatives = true);
-			static std::vector<Element> cleanNegatives(std::vector<Element>& elems);
+			/**
+			 * Assumes you're going to give it nice start and end positions
+			 * If you don't supply any, then it just does it across the whole thing
+			 */
+			static std::vector<Element> cleanNegatives(std::vector<Element>& elems, int start = 0, int end = -1);
 			/**
 			 * Returns false if there are syntax errors, true otherwise. Requires negatives to be cleaned up
 			 */

@@ -45,7 +45,7 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 	// Maybe I can get a list of all the brackets, and evaluate them that way? Or each iteration, get the innermost bracket pair?
 	// Or I could split it into vector of snippets, that I can then evaluate one by one?
 
-	// TODO: Implement approach
+	// TODO: Implement approach fully
 	// Current approach decided:
 	// Get a list of all brackets
 	// Loop, evaluating the innermost pair each iteration
@@ -62,6 +62,7 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 			bool function = i > 0 ? elems.at(i - 1).type == FUNCTION : false;
 			BracketInfo currBracket = BracketInfo(i, function, bracketDepth);
 			currBracket.closePos = findCloseBracket(elems, i);
+			std::cout << "BracketDepth: " << bracketDepth << " ClosePos: " << currBracket.closePos << std::endl;
 			if(currBracket.closePos != -1) {
 				brackets.push_back(currBracket);
 			}
@@ -101,14 +102,15 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 
 		// If an innermost bracket has been found
 		if(innermost) {
-			if(!innermost->hasFunction) { // FIXME: Elements are not removed/replaced correctly after evaluating a snippet
-				evalSnippet(elems, innermost->openPos, innermost->closePos); // FIXME: Problem with factorials
-				elems[innermost->openPos] = elems.at(innermost->openPos + 1);
-				elems.erase(elems.begin() + innermost->openPos + 1);
-				std::cout << helpers::Helper::elemsToStr(elems) << std::endl;
+			if(!innermost->hasFunction) {
+				innermost->closePos = findCloseBracket(elems, innermost->openPos); // Update the closing position
+				evalSnippet(elems, innermost->openPos, innermost->closePos);
+				elems[innermost->openPos] = Element(elems.at(innermost->openPos + 1));
+				elems.erase(elems.begin() + innermost->openPos + 1); // Why does it not work to do 'elems.erase(elems.begin() + innermost->openPos + 1, elems.begin()  + innermost->openPos + 2)' ?
+				elems.erase(elems.begin() + innermost->openPos + 1); // It seems that I am forced to  do this instead, two calls to erase
 				brackets.erase(brackets.begin() + innermostIndex);
 			} else {
-				// TODO: Handle functions with arguments
+				// TODO: Handle functions, as well as ones with arguments
 			}
 		}
 
@@ -165,7 +167,9 @@ void EvaluateHandler::applyOperator(std::vector<Element>& elems, int opIndex, sh
 		default:
 			replaceElements:
 			before.num_value = newNum;
-			elems.erase(elems.begin() + opIndex, elems.begin() + opIndex + 1);
+			elems.erase(elems.begin() + opIndex); // Same goes for here - having to do two calls to erase
+			elems.erase(elems.begin() + opIndex);
+			std::cout << "opIndex: " << opIndex << std::endl;
 			numRemoved = 2;
 			break;
 	}
@@ -180,13 +184,16 @@ int EvaluateHandler::findCloseBracket(std::vector<Element>& elems, int afterInde
 		} else if(elems.at(i).isCloseBracket()) {
 			if(depth == 0) {
 				return i;
+			} else {
+				depth--;
 			}
 		}
 	}
 	return -1;
 }
 
-void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int end) {
+void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int end) { // TODO: Implement BODMAS, or some sort of operation order
+	ParseHandler::cleanNegatives(elems, start, end); // Clean up negatives left from replacing brackets
 	std::cout << "len: " << elems.size() << " start: " << start << " end: " << end << std::endl;
 	for(int i = start; i < end; i++) {
 		Element& curr = elems.at(i);
@@ -194,7 +201,9 @@ void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int en
 		if(curr.type == OPERATOR) {
 			short numRem = 0;
 			applyOperator(elems, i, numRem);
+			std::cout << "Got past applyOperator" << std::endl;
 			i -= numRem;
+			end -= numRem;
 		}
 	}
 }
