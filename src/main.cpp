@@ -61,38 +61,5 @@ int main() {
 
 		Expression expr2 = Expression(elems);
 		std::cout << std::string(expr2.elemsToString()) << std::endl;
-//		std::cout << err->str() << std::endl;
-
-		// Use EvaluateHandler to calculate the value of the expression
 	}
 }
-
-		/*
-
-		// Break loop if the string is "exit" (Note: the equality operator compares the actual string content)
-		if(str == "exit") {
-			break;
-		} else if(str == "deg") {
-			helpers::CalcHelper::mode = helpers::DEGREES;
-			cout << "Switched to mode: DEGREES" << endl;
-			continue;
-		} else if(str == "rad") {
-			helpers::CalcHelper::mode = helpers::RADIANS;
-			cout << "Switched to mode: RADIANS" << endl;
-			continue;
-		}
-
-		// Char array to hold the input
-		char input[str.size()];
-		// Copy str into input
-		str.copy(input, str.size());
-		// An array of characters requires a '\0' character to print properly, as an array of characters is a c-style string, where the end is the first '\0'
-		// Actually no it doesn't, usually, but it's probably a good idea, and it doesn't hurt
-		// For more info: https://stackoverflow.com/questions/14183445/what-does-0-mean
-		// cout << input + '\0' << endl;
-
-		int arrlen = sizeof(input) / sizeof(input[0]);
-		double ans = helpers::CalcHelper::calculate(input, arrlen);
-		cout << ">> " << ans << endl;
-	}
-}*/

@@ -62,7 +62,6 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 			bool function = i > 0 ? elems.at(i - 1).type == FUNCTION : false;
 			BracketInfo currBracket = BracketInfo(i, function, bracketDepth);
 			currBracket.closePos = findCloseBracket(elems, i);
-			std::cout << "BracketDepth: " << bracketDepth << " ClosePos: " << currBracket.closePos << std::endl;
 			if(currBracket.closePos != -1) {
 				brackets.push_back(currBracket);
 			}
@@ -75,15 +74,6 @@ double EvaluateHandler::evaluate(std::vector<Element>& elems, std::stringstream*
 	int maxIterations = 1000;
 	int iteration = 0;
 	while(elems.size() > 1) {
-		// Then evaluate any factorials
-// 		for(int i = 0; i < elems.size(); i++) {
-// 			if(elems.at(i).isOperator('!') && !elems.at(i - 1).isCloseBracket()) { // Check it's not a '(...)!' situation
-// 				short rem = 1;
-// 				applyOperator(elems, i, rem);
-// 				continue;
-// 			}
-// 		}
-
 		// We need the innermost bracket pair, so that there won't be any brackets inside them
 		BracketInfo* innermost = nullptr;
 		int innermostIndex = -1;

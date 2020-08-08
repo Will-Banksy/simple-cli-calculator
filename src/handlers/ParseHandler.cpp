@@ -13,7 +13,8 @@ std::vector<Element> ParseHandler::parse(std::string expr, bool cleanNegatives) 
 	for(int i = 0; i < expr.size(); i++) {
 		char ch = expr[i];
 		if(isOpeningBracket(ch)) {
-			elems.push_back(Element(BRACKET, true)); // If the character is a bracket, add it to the end of the vector
+			bool isNegative = i > 0 ? false : elems.at(i - 1).openbracket_isnegative; // FIXME: Make this check if the '-' is an operator or a negative sign
+			elems.push_back(Element(BRACKET, true, isNegative)); // If the character is a bracket, add it to the end of the vector
 		} else if(isClosingBracket(ch)) {
 			elems.push_back(Element(BRACKET, false));
 		} else if(isOperator(ch)) {

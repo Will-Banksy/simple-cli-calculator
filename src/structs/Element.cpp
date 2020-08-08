@@ -9,6 +9,7 @@ Element::Element(Type type, double val) {
 	op_value = 0;
 	func_value = "";
 	bracket_isopen = false;
+	openbracket_isnegative = false;
 }
 
 Element::Element(Type type, char val) {
@@ -18,6 +19,7 @@ Element::Element(Type type, char val) {
 	num_value = 0;
 	func_value = "";
 	bracket_isopen = false;
+	openbracket_isnegative = false;
 }
 
 Element::Element(Type type, std::string val) {
@@ -33,11 +35,13 @@ Element::Element(Type type, std::string val) {
 	num_value = 0;
 	op_value = 0;
 	bracket_isopen = false;
+	openbracket_isnegative = false;
 }
 
-Element::Element(Type type, bool val) {
+Element::Element(Type type, bool val, bool openBracketNegative) {
 	this->type = type;
 	bracket_isopen = val;
+	openbracket_isnegative = openBracketNegative;
 
 	num_value = 0;
 	op_value = 0;
@@ -49,7 +53,9 @@ Element::Element(Type type) {
 	num_value = 0;
 	op_value = 0;
 	func_value = "";
+	const_value = "";
 	bracket_isopen = false;
+	openbracket_isnegative = false;
 }
 
 Element::Element(const Element& elem) {
@@ -59,6 +65,7 @@ Element::Element(const Element& elem) {
 	func_value = elem.func_value;
 	const_value = elem.const_value;
 	bracket_isopen = elem.bracket_isopen;
+	openbracket_isnegative = elem.openbracket_isnegative;
 }
 
 
@@ -98,7 +105,7 @@ std::string Element::toString() {
 			break;
 
 		case BRACKET:
-			stream << (isOpenBracket() ? "(" : ")");
+			stream << (isOpenBracket() ? (openbracket_isnegative ? "-(" : "(") : ")");
 			break;
 
 		case FUNCTION:
