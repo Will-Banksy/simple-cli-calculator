@@ -3,8 +3,8 @@
 
 using namespace handlers;
 
-std::vector<char> CalculationHandler::operators = { ',', '+', '-', '*', '/', '^', '!', '%' };
-// std::vector<char> CalculationHandler::ops_bodmas = { '^', '/', '*', '-', '+' };
+OpList CalculationHandler::operators = { ',', '+', '-', '*', '/', '^', '!', '%' };
+std::vector<OpList> CalculationHandler::ops_bodmas = getBODMASOperators();
 std::map<std::string, double> CalculationHandler::constants = getConstants();
 std::vector<Function> CalculationHandler::functions = getFunctions();
 
@@ -15,6 +15,16 @@ std::map<std::string, double> CalculationHandler::getConstants() {
 	consts["tau"] = M_PI * 2;
 	return consts;
 }
+
+std::vector<OpList> handlers::CalculationHandler::getBODMASOperators() {
+	std::vector<OpList> ops;
+	ops.push_back({'!'});
+	ops.push_back({'^'});
+	ops.push_back({'*', '/', '%'});
+	ops.push_back({'+', '-'});
+	return ops;
+}
+
 
 std::vector<Function> handlers::CalculationHandler::getFunctions() { // Maybe include versine and others: https://en.wikipedia.org/wiki/Versine | https://en.wikipedia.org/wiki/Cofunction
 	std::vector<Function> fns;

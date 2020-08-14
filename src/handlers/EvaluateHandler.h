@@ -22,6 +22,7 @@ namespace handlers {
 			 * Returns the index of the corresponding closing bracket to the one at the index specified by afterIndex, returns -1 if one doesn't exist
 			 */
 			static int findCloseBracket(std::vector<Element>& elems, int afterIndex);
+			static bool isOneOf(char op, std::vector<char> list);
 	};
 }
 

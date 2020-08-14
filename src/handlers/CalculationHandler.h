@@ -9,16 +9,19 @@
 using namespace structs;
 
 namespace handlers {
+	typedef std::vector<char> OpList;
+
 	class CalculationHandler {
 		public:
-			static std::vector<char> operators;
-			static std::vector<char> ops_bodmas;
+			static OpList operators;
+			static std::vector<OpList> ops_bodmas; // The closer to the start of the vector a list of operators is, the higher precedence for each of those operators. The index is the precedence
 			static std::map<std::string, double> constants;
 			static std::vector<Function> functions;
 
 		private:
 			static std::vector<Function> getFunctions();
 			static std::map<std::string, double> getConstants();
+			static std::vector<OpList> getBODMASOperators();
 	};
 }
 

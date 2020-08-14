@@ -182,18 +182,33 @@ int EvaluateHandler::findCloseBracket(std::vector<Element>& elems, int afterInde
 	return -1;
 }
 
-void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int end) { // TODO: Implement BODMAS, or some sort of operation order
+void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int end) { // TODO: Test implementation of operation order - first fix parser error checking
 	ParseHandler::cleanNegatives(elems, start, end); // Clean up negatives left from replacing brackets
-	std::cout << "len: " << elems.size() << " start: " << start << " end: " << end << std::endl;
-	for(int i = start; i < end; i++) {
-		Element& curr = elems.at(i);
+// 	std::cout << "len: " << elems.size() << " start: " << start << " end: " << end << std::endl;
 
-		if(curr.type == OPERATOR) {
-			short numRem = 0;
-			applyOperator(elems, i, numRem);
-			std::cout << "Got past applyOperator" << std::endl;
-			i -= numRem;
-			end -= numRem;
+	// Loop through the bodmas operators, so we can have some sort of order of operations
+	for(int j = 0; j < CalculationHandler::ops_bodmas.size(); j++) {
+		OpList opsLookingFor = CalculationHandler::ops_bodmas.at(j);
+
+		for(int i = start; i < end; i++) {
+			Element& curr = elems.at(i);
+
+			if(curr.type == OPERATOR && isOneOf(curr.op_value, opsLookingFor)) { // If the current operator is of the current precedence, evaluate it
+				short numRem = 0;
+				applyOperator(elems, i, numRem);
+				std::cout << "Got past applyOperator" << std::endl;
+				i -= numRem;
+				end -= numRem;
+			}
 		}
 	}
+}
+
+bool handlers::EvaluateHandler::isOneOf(char op, OpList list) {
+	for(char ch : list) {
+		if(ch == op) {
+			return true;
+		}
+	}
+	return false;
 }

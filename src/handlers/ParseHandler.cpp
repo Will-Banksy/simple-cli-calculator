@@ -166,17 +166,18 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			}
 
 			// Check if operators are in the correct places
-			// FIXME: ... + -(...) case is not accounted for. Handle this somehow (Definitely not a field inside Element - that's working around the problem rather than solving it)
+			// FIXME: Negative brackets '-(...)' checking has seemingly messed up syntax checking for operators altogether - fix this. Also make negative bracket checking work properly
 			if(curr.isOperator('!')) {
 				if(!(prev.isNumber() || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
 					*err << "ERROR: Invalid placement of ! operator after " << prev.toString() << std::endl;
 					return false;
 				}
 			} else if(elems.size() < 3 && curr.type == OPERATOR) { // In that case there's not enough room for an expression both sides of the operator
-				*err << "ERROR: Operator " << curr.op_value << " must come after and be followed by an expression" << std::endl; // TODO: Make this check if there is a '-' that would make a bracket negative, and allow it
+				*err << "ERROR: Operator " << curr.op_value << " must come after and be followed by an expression" << std::endl;
 				return false;
 			} else if(prev.type == OPERATOR && !prev.isOperator('!')) { // Check other operators
 				if(pprev) {
+					// This is the troublesome block of code, I think --
 					bool isValidOperator = pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!');
 					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.isNumber() || curr.type == FUNCTION);
 					bool isNegativeSymbol = pprev->type == OPERATOR && prev.isOperator('-') && curr.isOpenBracket(); // Need to explicitly check if this operator is actually a negative symbol for the bracket right after it
@@ -186,6 +187,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
 						return false;
 					}
+					// --
 				}
 			}
 		}
