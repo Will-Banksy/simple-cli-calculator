@@ -5,6 +5,7 @@
 #include "handlers/ParseHandler.h"
 #include "structs/Expression.h"
 #include "handlers/EvaluateHandler.h"
+#include <array>
 
 // Whitespace characters
 char ws_[] = " \t\n\r\f\v";

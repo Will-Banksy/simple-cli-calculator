@@ -166,9 +166,8 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			}
 
 			// Check if operators are in the correct places
-			// FIXME: Negative brackets '-(...)' checking has seemingly messed up syntax checking for operators altogether - fix this. Also make negative bracket checking work properly
 			if(curr.isOperator('!')) {
-				if(!(prev.isNumber() || prev.isCloseBracket())) { // If it's not after a number or closing bracket or comma
+				if(!(prev.isNumber() || prev.isCloseBracket())) { // If it's not after a number or closing bracket
 					*err << "ERROR: Invalid placement of ! operator after " << prev.toString() << std::endl;
 					return false;
 				}
@@ -178,15 +177,45 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 			} else if(prev.type == OPERATOR && !prev.isOperator('!')) { // Check other operators
 				if(pprev) {
 					// This is the troublesome block of code, I think --
-					bool isValidOperator = pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!');
-					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.isNumber() || curr.type == FUNCTION);
-					bool isNegativeSymbol = pprev->type == OPERATOR && prev.isOperator('-') && curr.isOpenBracket(); // Need to explicitly check if this operator is actually a negative symbol for the bracket right after it
-					bool isBeforeNegative = i < elems.size() - 2 ? elems.at(i + 1).isOperator('-') : false;
-					isValidOperator = isBeforeNegative ? (pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!')) : isValidOperator; // If isBeforeNegative, then do some extra checks (the same as the first ones for isValidOperator)
-					if(!isValidOperator ^ !isNegativeSymbol) { // I have NEVER before needed to use XOR in my LIFE
+					// prev is the current operator
+					// List of conditions this needs to satisfy (+ is any operator except !)
+					// a + b
+					// a + -b
+					// (...) + (...)
+					// (...) + b
+					// a + (...)
+					// a + -(...)
+					// (...) + -(...)
+					Element* next = i < elems.size() - 1 ? &elems.at(i + 1) : nullptr;
+
+					// This method may not be the most efficient, but in this case it really doesn't matter, the difference would be negligible
+					bool case0 = pprev->isNumber() && curr.isNumber();
+					bool case1 = pprev->isNumber() && curr.isOperator('-') && (next ? next->isNumber() : false);
+					bool case2 = pprev->isCloseBracket() && curr.isOpenBracket();
+					bool case3 = pprev->isCloseBracket() && curr.isNumber();
+					bool case4 = pprev->isNumber() && curr.isOpenBracket();
+					bool case5 = pprev->isNumber() && curr.isOperator('-') && (next ? next->isOpenBracket() : false);
+					bool case6 = pprev->isCloseBracket() && curr.isOperator('-') && (next ? next->isOpenBracket() : false);
+
+					bool isValidOperator = case0 || case1 || case2 || case3 || case4 || case5 || case6;
+					if(!isValidOperator) {
 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
 						return false;
 					}
+
+					std::cout << "Successful Checking of Operator" << std::endl;
+// 					bool isValidOperator = pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!');
+// 					isValidOperator = isValidOperator && (curr.isOpenBracket() || curr.isNumber() || curr.type == FUNCTION);
+// 					std::cout << "isValidOperator: " << isValidOperator << std::endl;
+// 					bool isNegativeSymbolBracket = pprev->type == OPERATOR && prev.isOperator('-') && (curr.isOpenBracket()); // Need to explicitly check if this operator is actually a negative symbol for the bracket right after it
+// 					std::cout << "isNegativeSymbolBracket: " << isNegativeSymbolBracket << std::endl;
+// 					bool isBeforeNegative = i < elems.size() - 2 ? elems.at(i + 1).isOperator('-') : false;
+// 					std::cout << "isBeforeNegative: " << isBeforeNegative << std::endl;
+// 					isValidOperator = isBeforeNegative ? (pprev->isCloseBracket() || pprev->isNumber() || pprev->isOperator('!')) : isValidOperator; // If isBeforeNegative, then do some extra checks (the same as the first ones for isValidOperator)
+// 					if(isValidOperator ^ isNegativeSymbolBracket) { // I have NEVER before needed to use XOR in my LIFE
+// 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
+// 						return false;
+// 					}
 					// --
 				}
 			}
