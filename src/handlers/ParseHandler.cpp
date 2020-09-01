@@ -206,7 +206,7 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 					bool case9 = pprev->isNumber() && curr.isOperator('-') && (next ? next->type == FUNCTION : false);
 					bool case10= pprev->isCloseBracket() && curr.isOperator('-') && (next ? next->type == FUNCTION : false);
 
-					bool isValidOperator = case0 || case1 || case2 || case3 || case4 || case5 || case6;
+					bool isValidOperator = case0 || case1 || case2 || case3 || case4 || case5 || case6 || case7 || case8 || case9 || case10;
 					if(!isValidOperator) {
 						*err << "ERROR: Operator " << prev.op_value << " must come after and be followed by an expression" << std::endl;
 						return false;
