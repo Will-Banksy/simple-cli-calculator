@@ -179,13 +179,18 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 					// This is the troublesome block of code, I think --
 					// prev is the current operator
 					// List of conditions this needs to satisfy (+ is any operator except !)
-					// a + b
-					// a + -b
-					// (...) + (...)
-					// (...) + b
-					// a + (...)
-					// a + -(...)
-					// (...) + -(...)
+					// 0: a + b
+					// 1: a + -b
+					// 2: (...) + (...)
+					// 3: (...) + b
+					// 4: a + (...)
+					// 5: a + -(...)
+					// 6: (...) + -(...)
+					// 7: a + fun(...)
+					// 8: (...) + fun(...)
+					// 9: a + -fun(...)
+					//10: (...) + -fun(...)
+
 					Element* next = i < elems.size() - 1 ? &elems.at(i + 1) : nullptr;
 
 					// This method may not be the most efficient, but in this case it really doesn't matter, the difference would be negligible
@@ -196,6 +201,10 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 					bool case4 = pprev->isNumber() && curr.isOpenBracket();
 					bool case5 = pprev->isNumber() && curr.isOperator('-') && (next ? next->isOpenBracket() : false);
 					bool case6 = pprev->isCloseBracket() && curr.isOperator('-') && (next ? next->isOpenBracket() : false);
+					bool case7 = pprev->isNumber() && curr.type == FUNCTION; // Don't need to check if the function is valid another part of this method does that for me
+					bool case8 = pprev->isCloseBracket() && curr.type == FUNCTION;
+					bool case9 = pprev->isNumber() && curr.isOperator('-') && (next ? next->type == FUNCTION : false);
+					bool case10= pprev->isCloseBracket() && curr.isOperator('-') && (next ? next->type == FUNCTION : false);
 
 					bool isValidOperator = case0 || case1 || case2 || case3 || case4 || case5 || case6;
 					if(!isValidOperator) {
