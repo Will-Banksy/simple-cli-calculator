@@ -88,7 +88,7 @@ std::vector<Element> ParseHandler::cleanNegatives(std::vector<Element>& elems, i
 			Element* prev = &elems.at(i - 1);
 			Element* pprev = i > 1 ? &elems.at(i - 2) : nullptr;
 
-			if(prev->type == OPERATOR && prev->op_value == '-') {
+			if(prev->isOperator('-')) {
 				if(curr->type == NUMBER) {
 					bool currNeg = pprev ? ((pprev->type == OPERATOR && pprev->op_value != '!') || pprev->isOpenBracket()) : true; // 2! - 4 | 2 * -6 | 2 - 3
 					if(currNeg) {
@@ -190,10 +190,12 @@ bool ParseHandler::check(std::vector<Element>& elems, std::stringstream* err) {
 					// 8: (...) + fun(...)
 					// 9: a + -fun(...)
 					//10: (...) + -fun(...)
+					// TODO: Add check for if the current operator is the negative in any of the cases
 
 					Element* next = i < elems.size() - 1 ? &elems.at(i + 1) : nullptr;
 
 					// This method may not be the most efficient, but in this case it really doesn't matter, the difference would be negligible
+					// Plus this is easier to read & understand
 					bool case0 = pprev->isNumber() && curr.isNumber();
 					bool case1 = pprev->isNumber() && curr.isOperator('-') && (next ? next->isNumber() : false);
 					bool case2 = pprev->isCloseBracket() && curr.isOpenBracket();

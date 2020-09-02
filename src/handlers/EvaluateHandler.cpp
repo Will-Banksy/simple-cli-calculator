@@ -196,7 +196,6 @@ void EvaluateHandler::evalSnippet(std::vector<Element>& elems, int start, int en
 			if(curr.type == OPERATOR && isOneOf(curr.op_value, opsLookingFor)) { // If the current operator is of the current precedence, evaluate it
 				short numRem = 0;
 				applyOperator(elems, i, numRem);
-				std::cout << "Got past applyOperator" << std::endl;
 				i -= numRem;
 				end -= numRem;
 			}
